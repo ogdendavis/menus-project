@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-# This is a temporary file to practice manipulating the SQLite3 server with
-# SQLAlchemy
+# This is a temporary file to practice adding entries to the SQLite3 server
+# with SQLAlchemy
 
 # Import SQLAlchemy tools to connect to and communicate with database
 from sqlalchemy import create_engine
