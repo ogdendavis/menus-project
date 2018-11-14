@@ -43,6 +43,10 @@ class MenuItem(Base):
     # Create foreign key relationship between restaurant and menu_item
     # restaurant_id is populated from restaurant table
     restaurant_id = Column(Integer, ForeignKey('restaurant.id'))
+    # This creates the relationship between the class attribute 'restaurant'
+    # and the Restaurant class. When you create a new menu item, you'll pass
+    # a reference to the restaurant to which the menu item belongs in this
+    # 'restaurant' attribute.
     restaurant = relationship(Restaurant)
 
 ### Final setup ###
