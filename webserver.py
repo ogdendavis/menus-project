@@ -22,13 +22,12 @@ class webserverHandler(BaseHTTPRequestHandler):
                 self.wfile.write(output)
                 # Print output in terminal for reference/debugging
                 print(output)
-
-
-            except IOError:
-                # IOError is the error type for 'file not found' in Python 2
-                # In Python 3, this is now an OSError, but IOError is an alias
-                # for OSError, so either/both will work
-                self.send_error(404, "File Not Found {}".format(self.path))
+                
+        except IOError:
+            # IOError is the error type for 'file not found' in Python 2
+            # In Python 3, this is now an OSError, but IOError is an alias
+            # for OSError, so either/both will work
+            self.send_error(404, "File Not Found {}".format(self.path))
 
 
 ### Instantiate server and set it up to listen on port ###
@@ -41,7 +40,6 @@ def main():
         # Notify that server is running, and make it run until stopped
         print("Web server running on port {}".format(port))
         server.serve_forever()
-
 
     except KeyboardInterrupt:
         # If user stops server with keyboard interrupt, notify that it's
