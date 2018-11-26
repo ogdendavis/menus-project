@@ -1,11 +1,15 @@
 #!/usr/bin/env python
 
-### Web server script! ###
+### Web server script! Rewritten from original (example) to perform
+### CRUD functions on restaurantmenu.db
 
 # BaseHTTPServer is Python's basic HTTP server library
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 # CGI helps with parsing POST requests so we can respond appropriately
 import cgi
+# read_entries is the module I wrote to print all restaurants to the terminal,
+# modified to output all restaurant names in a list
+import read_entries
 
 ### How to process HTTP requests ###
 
@@ -15,36 +19,28 @@ class webserverHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         try:
             # Test for sending back a basic response to a get request
-            if self.path.endswith("/hello"):
+            if self.path.endswith("/restaurants"):
                 self.send_response(200) # GET success code
                 self.send_header('Content-type', 'text/html')
                 self.end_headers()
 
-                # Simple test output
+                # Use modified read_entries to get list of restaurant names
+                restaurants = read_entries()
+
                 output = ""
-                output += "<html><body>Hello!"
-                # Adding form from do_POST (below)
-                output += "<form method = 'POST' enctype = 'multipart/form-data' action = '/hello'><h2>What would you like me to say?</h2><input name = 'message' type = 'text'><input type = 'submit' value = 'Submit'></form>"
-                # Close body and html tags!
-                output += "</body></html>"
-
-                # Write output to write file, thus sending to client
-                self.wfile.write(output)
-                # Print output in terminal for reference/debugging
-                print(output)
-
-            # A second test page -- this time, en espanol!
-            if self.path.endswith("/hola"):
-                self.send_response(200) # GET success cod
-                self.send_header('Content-type', 'text/html')
-                self.end_headers()
-
-                # Simple test output
-                output = ""
-                # &#161; is HTML entity for upside-down '!'. Also added link
-                output += "<html><body>&#161;Hola! <a href='/hello'>Back to Hello</a>"
-                # Adding form from do_POST (below)
-                output += "<form method = 'POST' enctype = 'multipart/form-data' action = '/hello'><h2>What would you like me to say?</h2><input name = 'message' type = 'text'><input type = 'submit' value = 'Submit'></form>"
+                # HTML document setup
+                output += """<html lang='en'>
+                                <head>
+                                    <title>Restaurants</title>
+                                    <meta charset='utf-8'>
+                                </head>
+                                <body>"""
+                output += "<h1>Restaurants!</h1>"
+                # Put restaurant names in an unordered list
+                output += "<ul>"
+                for name in restaurants:
+                    output += "<li>{}</li>".format(name)
+                output += "</ul>"
                 # Close body and html tags!
                 output += "</body></html>"
 
