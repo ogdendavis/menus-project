@@ -22,7 +22,22 @@ class webserverHandler(BaseHTTPRequestHandler):
                 self.wfile.write(output)
                 # Print output in terminal for reference/debugging
                 print(output)
-                
+
+            # A second test page -- this time, en espanol!
+            if self.path.endswith("/hola"):
+                self.send_response(200) # GET success cod
+                self.send_header('Content-type', 'text/html')
+                self.end_headers()
+
+                # Simple test output
+                output = ""
+                # &#161; is HTML entity for upside-down '!'. Also added link
+                output += "<html><body>&#161;Hola! <a href='/hello'>Back to Hello</a></body></html>"
+                # Write output to write file, thus sending to client
+                self.wfile.write(output)
+                # Print output in terminal for reference/debugging
+                print(output)
+
         except IOError:
             # IOError is the error type for 'file not found' in Python 2
             # In Python 3, this is now an OSError, but IOError is an alias
