@@ -97,8 +97,16 @@ class webserverHandler(BaseHTTPRequestHandler):
 
                 output = ""
                 # HTML document setup
-                output += "ID: {}<br />".format(restaurant_id)
-                output += "Name: {}".format(restaurant_name)
+                output += "<html lang='en'><head>"
+                output += "<title>Edit {}</title>".format(restaurant_name)
+                output += "<meta charset='utf-8'></head><body>"
+                output += "<h1>Edit {}</h1>".format(restaurant_name)
+                # Form to edit this restaurant
+                output += "<form method = 'POST' enctype = 'multipart/form-data' action = '/restaurants/edit'>"
+                output += """New name: <input name = 'new_name' type = 'text' placeholder = "{}">""".format(restaurant_name)
+                output += "<input type = 'submit' value = 'Submit'></form>"
+                # Close body and html tags!
+                output += "</body></html>"
 
                 # Write to response and print to terminal for reference
                 self.wfile.write(output)
