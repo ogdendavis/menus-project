@@ -87,40 +87,41 @@ class webserverHandler(BaseHTTPRequestHandler):
     # Override default do_POST to respond to input appropriately
     def do_POST(self):
         try:
-            self.send_response(301) # Response for successful POST
-            self.send_header('Content-type', 'text/html')
-            self.end_headers()
+            if self.path.endswith("/restaurants/new"):
+                self.send_response(301) # Response for successful POST
+                self.send_header("Content-type", "text/html")
+                self.end_headers()
 
-            # I don't entirely get this part -- I'm using cgi to extract data
-            # from the post request
-            # Note that this 'self' refers to the post request that was sent,
-            # so here we're getting the content-type header that was sent to
-            # us from the client, NOT the content-type header we declared above
-            # to send back
-            ctype, pdict = cgi.parse_header(self.headers.getheader('content-type'))
-            # If the headers that were sent include form input data:
-            if ctype == 'multipart/form-data':
-                # Using the dictionary created (somehow) earlier to parse the
-                # form fields that were sent and get the 'restaurant' field,
-                # which is a list with 1 item (the text entered)
-                fields = cgi.parse_multipart(self.rfile, pdict)
-                restaurant_name = fields.get('restaurant')
-                # Use function from db_queries to add restaurant to database
-                add_restaurant(restaurant_name[0])
+                # I don't entirely get this part -- I'm using cgi to extract data
+                # from the post request
+                # Note that this 'self' refers to the post request that was sent,
+                # so here we're getting the content-type header that was sent to
+                # us from the client, NOT the content-type header we declared above
+                # to send back
+                ctype, pdict = cgi.parse_header(self.headers.getheader('content-type'))
+                # If the headers that were sent include form input data:
+                if ctype == 'multipart/form-data':
+                    # Using the dictionary created (somehow) earlier to parse the
+                    # form fields that were sent and get the 'restaurant' field,
+                    # which is a list with 1 item (the text entered)
+                    fields = cgi.parse_multipart(self.rfile, pdict)
+                    restaurant_name = fields.get('restaurant')
+                    # Use function from db_queries to add restaurant to database
+                    add_restaurant(restaurant_name[0])
 
-                # Output mostly copied from do_GET for /restaurants/new
-                output = ""
-                output += "<html lang='en'><head><title>Add a Restaurant</title><meta charset='utf-8'></head><body>"
-                # Only change from do_GET -- confirm that restaurant was added
-                output += "<i>{} added!</i>".format(restaurant_name[0])
-                output += "<h1>Add a Restaurant!</h1>"
-                output += "<form method = 'POST' enctype = 'multipart/form-data' action = '/restaurants/new'>Restaurant name: <input name = 'restaurant' type = 'text'> <input type = 'submit' value = 'Submit'></form>"
-                output += "</body></html>"
+                    # Output mostly copied from do_GET for /restaurants/new
+                    output = ""
+                    output += "<html lang='en'><head><title>Add a Restaurant</title><meta charset='utf-8'></head><body>"
+                    # Only change from do_GET -- confirm that restaurant was added
+                    output += "<i>{} added!</i>".format(restaurant_name[0])
+                    output += "<h1>Add a Restaurant!</h1>"
+                    output += "<form method = 'POST' enctype = 'multipart/form-data' action = '/restaurants/new'>Restaurant name: <input name = 'restaurant' type = 'text'> <input type = 'submit' value = 'Submit'></form>"
+                    output += "</body></html>"
 
-                # Send the output to the client
-                self.wfile.write(output)
-                # Print to terminal for debugging
-                print(output)
+                    # Send the output to the client
+                    self.wfile.write(output)
+                    # Print to terminal for debugging
+                    print(output)
 
         except:
             pass
