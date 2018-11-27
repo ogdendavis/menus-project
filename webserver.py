@@ -41,10 +41,14 @@ class webserverHandler(BaseHTTPRequestHandler):
                 # Put restaurant names in an unordered list
                 output += "<ul>"
                 for restaurant in restaurants:
+                    edit_link = "/restaurants/{}/edit".format(restaurant.id)
                     output += "<li>{}".format(restaurant.name)
                     # Sub-list to hold Edit and Delete links
-                    output += "<ul><li><a href='#'>Edit</a></li><li><a href='#'>Delete</a></li></ul>"
-                    output += "</li>"
+                    output += "<ul>"
+                    output += "<li><a href='{}'>Edit</a>".format(edit_link)
+                    output += "</li><li><a href='#'>Delete</a></li>"
+                    # Close sub-list ul and restaurant li
+                    output += "</ul></li>"
                 output += "</ul>"
                 # Close body and html tags!
                 output += "</body></html>"
