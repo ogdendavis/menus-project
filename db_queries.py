@@ -27,6 +27,5 @@ def read_names():
         # object, so we have to pull out the first entry to get the name string
         names_list.append(name[0])
 
-    # print to terminal to confirm output, then return it
-    print(names_list)
+    # Return Python list of restaurant names
     return names_list
