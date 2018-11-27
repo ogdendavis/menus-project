@@ -17,20 +17,15 @@ Base.metadata.bind = engine
 # Create a sessionmaker -- each function will create its own session
 DBSession = sessionmaker(bind = engine)
 
-def read_names():
+def get_restaurants():
     # Create a session for this database transaction
     session = DBSession()
-    # Empty list for names
-    names_list = []
-    # Pull all restaurant names, in alpha order, into list
-    for name in session.query(Restaurant.name).order_by('name'):
-        # Even though we're only getting the name, it still arrives as an
-        # object, so we have to pull out the first entry to get the name string
-        names_list.append(name[0])
+    # Pull all restaurants into a Python object, in alpha order
+    restaurants = session.query(Restaurant).order_by('name').all()
     # Close session
     session.close()
     # Return Python list of restaurant names
-    return names_list
+    return restaurants
 
 
 def add_restaurant(new_name):

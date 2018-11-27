@@ -9,7 +9,7 @@ from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 import cgi
 # db_queries holds functions that perform SQL queries on the database and
 # return the results in ways that can be used in this Python server code
-from db_queries import read_names, add_restaurant
+from db_queries import get_restaurants, add_restaurant
 
 ### How to process HTTP requests ###
 
@@ -24,8 +24,8 @@ class webserverHandler(BaseHTTPRequestHandler):
                 self.send_header('Content-type', 'text/html')
                 self.end_headers()
 
-                # Use read_names to get list of restaurant names
-                restaurants = read_names()
+                # Use get_restaurants to get list of restaurant names
+                restaurants = get_restaurants()
 
                 output = ""
                 # HTML document setup
@@ -40,8 +40,8 @@ class webserverHandler(BaseHTTPRequestHandler):
                 output += "<a href='/restaurants/new'>Add a new restaurant</a>"
                 # Put restaurant names in an unordered list
                 output += "<ul>"
-                for name in restaurants:
-                    output += "<li>{}".format(name)
+                for restaurant in restaurants:
+                    output += "<li>{}".format(restaurant.name)
                     # Sub-list to hold Edit and Delete links
                     output += "<ul><li><a href='#'>Edit</a></li><li><a href='#'>Delete</a></li></ul>"
                     output += "</li>"
