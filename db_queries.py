@@ -14,8 +14,7 @@ from database_setup import Base, Restaurant, MenuItem
 engine = create_engine('sqlite:///restaurantmenu.db')
 Base.metadata.bind = engine
 
-# Create a session (like a cursor in PostgreSQL) -- you'll stage and send
-# commands and info to the database via the session
+# Create a session (like a cursor in PostgreSQL)
 DBSession = sessionmaker(bind = engine)
 session = DBSession()
 
