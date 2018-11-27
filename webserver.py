@@ -7,9 +7,9 @@
 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 # CGI helps with parsing POST requests so we can respond appropriately
 import cgi
-# read_entries is the module I wrote to print all restaurants to the terminal,
-# modified to output all restaurant names in a list
-import read_entries
+# db_queries holds functions that perform SQL queries on the database and
+# return the results in ways that can be used in this Python server code
+from db_queries import read_names
 
 ### How to process HTTP requests ###
 
@@ -24,8 +24,8 @@ class webserverHandler(BaseHTTPRequestHandler):
                 self.send_header('Content-type', 'text/html')
                 self.end_headers()
 
-                # Use modified read_entries to get list of restaurant names
-                restaurants = read_entries()
+                # Use read_names to get list of restaurant names
+                restaurants = read_names()
 
                 output = ""
                 # HTML document setup
