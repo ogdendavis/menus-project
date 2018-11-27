@@ -9,7 +9,7 @@ from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 import cgi
 # db_queries holds functions that perform SQL queries on the database and
 # return the results in ways that can be used in this Python server code
-from db_queries import read_names
+from db_queries import read_names, add_restaurant
 
 ### How to process HTTP requests ###
 
@@ -18,7 +18,7 @@ class webserverHandler(BaseHTTPRequestHandler):
     # Override default do_GET with our custom responses
     def do_GET(self):
         try:
-            # Test for sending back a basic response to a get request
+            # Restaurant list page
             if self.path.endswith("/restaurants"):
                 self.send_response(200) # GET success code
                 self.send_header('Content-type', 'text/html')
@@ -52,6 +52,31 @@ class webserverHandler(BaseHTTPRequestHandler):
                 # Print output in terminal for reference/debugging
                 print(output)
 
+            # Page to add new restaurants
+            if self.path.endswith("/restaurants/new"):
+                self.send_response(200)
+                self.send_header("Content-type", "text/html")
+                self.end_headers()
+
+                output = ""
+                # HTML document setup
+                output += """<html lang='en'>
+                                <head>
+                                    <title>Add a Restaurant</title>
+                                    <meta charset='utf-8'>
+                                </head>
+                                <body>"""
+                output += "<h1>Add a Restaurant!</h1>"
+                # Form to add a restaurant
+                output += "<form method = 'POST' enctype = 'multipart/form-data' action = '/restaurants/new'>Restaurant name: <input name = 'restaurant' type = 'text'> <input type = 'submit' value = 'Submit'></form>"
+                # Close body and html tags!
+                output += "</body></html>"
+
+                # Write output to write file, thus sending to client
+                self.wfile.write(output)
+                # Print output in terminal for reference/debugging
+                print(output)
+
         except IOError:
             # IOError is the error type for 'file not found' in Python 2
             # In Python 3, this is now an OSError, but IOError is an alias
@@ -76,28 +101,20 @@ class webserverHandler(BaseHTTPRequestHandler):
             # If the headers that were sent include form input data:
             if ctype == 'multipart/form-data':
                 # Using the dictionary created (somehow) earlier to parse the
-                # form fields that were sent
+                # form fields that were sent and get the 'restaurant' field,
+                # which is a list with 1 item (the text entered)
                 fields = cgi.parse_multipart(self.rfile, pdict)
-                # Getting the input from the 'message' field - it's an array
-                messagecontent = fields.get('message')
+                restaurant_name = fields.get('restaurant')
+                # Use function from db_queries to add restaurant to database
+                add_restaurant(restaurant_name[0])
 
-                # Output will include info from message field above, and will
-                # have the form that can be submitted to make this whole thing
-                # happen!
+                # Output mostly copied from do_GET for /restaurants/new
                 output = ""
-                output += "<html><body>"
-                output += "<h2>Okay, how about this:</h2>"
-                # Input from message field, as extracted into array above
-                output += "<h1>{}<h1>".format(messagecontent[0])
-
-                # Adding the form that we'll use to submit the info to start
-                # Note that the form attributes correspond to how we parsed the
-                # form data above -- it uses a POST, it sends a
-                # multipart/form-data header, and it has an input field named
-                # 'message'
-                output += "<form method = 'POST' enctype = 'multipart/form-data' action = '/hello'><h2>What would you like me to say?</h2><input name = 'message' type = 'text'><input type = 'submit' value = 'Submit'></form>"
-
-                # Close body and html tags!
+                output += "<html lang='en'><head><title>Add a Restaurant</title><meta charset='utf-8'></head><body>"
+                # Only change from do_GET -- confirm that restaurant was added
+                output += "<i>{} added!</i>".format(restaurant_name[0])
+                output += "<h1>Add a Restaurant!</h1>"
+                output += "<form method = 'POST' enctype = 'multipart/form-data' action = '/restaurants/new'>Restaurant name: <input name = 'restaurant' type = 'text'> <input type = 'submit' value = 'Submit'></form>"
                 output += "</body></html>"
 
                 # Send the output to the client
