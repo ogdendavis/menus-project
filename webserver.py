@@ -39,7 +39,10 @@ class webserverHandler(BaseHTTPRequestHandler):
                 # Put restaurant names in an unordered list
                 output += "<ul>"
                 for name in restaurants:
-                    output += "<li>{}</li>".format(name)
+                    output += "<li>{}".format(name)
+                    # Sub-list to hold Edit and Delete links
+                    output += "<ul><li><a href='#'>Edit</a></li><li><a href='#'>Delete</a></li></ul>"
+                    output += "</li>"
                 output += "</ul>"
                 # Close body and html tags!
                 output += "</body></html>"
