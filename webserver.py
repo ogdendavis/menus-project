@@ -36,6 +36,8 @@ class webserverHandler(BaseHTTPRequestHandler):
                                 </head>
                                 <body>"""
                 output += "<h1>Restaurants!</h1>"
+                # Link to add new restaurant
+                output += "<a href='/restaurants/new'>Add a new restaurant</a>"
                 # Put restaurant names in an unordered list
                 output += "<ul>"
                 for name in restaurants:
