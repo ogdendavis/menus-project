@@ -9,7 +9,7 @@ from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 import cgi
 # db_queries holds functions that perform SQL queries on the database and
 # return the results in ways that can be used in this Python server code
-from db_queries import get_restaurants, add_restaurant
+from db_queries import get_restaurants, get_restaurant_by_id, add_restaurant
 
 ### How to process HTTP requests ###
 
@@ -82,6 +82,28 @@ class webserverHandler(BaseHTTPRequestHandler):
                 self.wfile.write(output)
                 # Print output in terminal for reference/debugging
                 print(output)
+
+            # Page to edit existing restaurant
+            if self.path.endswith("/edit"):
+                # Display page to edit restaurant entry
+                self.send_response(200) # GET success code
+                self.send_header('Content-type', 'text/html')
+                self.end_headers()
+
+                # Get ID of restaurant to be edited from URL
+                restaurant_id = self.path.split('/')[2]
+                # Use ID to get restaurant name with db_queries function
+                restaurant_name = get_restaurant_by_id(restaurant_id).name
+
+                output = ""
+                # HTML document setup
+                output += "ID: {}<br />".format(restaurant_id)
+                output += "Name: {}".format(restaurant_name)
+
+                # Write to response and print to terminal for reference
+                self.wfile.write(output)
+                print(output)
+
 
         except IOError:
             # IOError is the error type for 'file not found' in Python 2

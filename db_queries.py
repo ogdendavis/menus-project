@@ -27,6 +27,15 @@ def get_restaurants():
     # Return Python list of restaurant names
     return restaurants
 
+def get_restaurant_by_id(id):
+    # Create a session for this transaction
+    session = DBSession()
+    # Query for one restaurant result, by id
+    target_restaurant = session.query(Restaurant).filter_by(id = id).one()
+    # Close session
+    session.close()
+    # Return object for target restaurant
+    return target_restaurant
 
 def add_restaurant(new_name):
     # Create a session for this database transaction
