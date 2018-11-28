@@ -57,3 +57,11 @@ def edit_restaurant(id, new_name):
     # Commit and close session
     session.commit()
     session.close()
+
+def delete_restaurant(id):
+    session = DBSession()
+    # Same as in edit_restaurant - get by id, perform function, commit, close
+    target = session.query(Restaurant).filter_by(id = id).one()
+    session.delete(target)
+    session.commit()
+    session.close()

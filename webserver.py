@@ -9,7 +9,7 @@ from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 import cgi
 # db_queries holds functions that perform SQL queries on the database and
 # return the results in ways that can be used in this Python server code
-from db_queries import get_restaurants, get_restaurant_by_id, add_restaurant, edit_restaurant
+from db_queries import get_restaurants, get_restaurant_by_id, add_restaurant, edit_restaurant, delete_restaurant
 
 ### How to process HTTP requests ###
 
@@ -198,6 +198,21 @@ class webserverHandler(BaseHTTPRequestHandler):
                 self.send_header("Location", "/restaurants")
                 self.end_headers()
 
+            if self.path.endswith("/delete"):
+                # We're not reading any form data, so no need for cgi here
+
+                # Form used the delete page's URL as action, so get restaurant
+                # id from that and delete it
+                id = self.path.split('/')[2]
+                delete_restaurant(id)
+
+                # Once DB function is completed, send back headers
+                self.send_response(301) # Response for successful POST
+                self.send_header("Content-type", "text/html")
+                # Redirect header -- causes client to go to restaurant list
+                self.send_header("Location", "/restaurants")
+                self.end_headers()
+
         except:
             pass
 
@@ -216,7 +231,7 @@ def main():
     except KeyboardInterrupt:
         # If user stops server with keyboard interrupt, notify that it's
         # stopping, and stop it!
-        print("^C entered, stopping web server...")
+        print(" Keyboard interrupt, stopping web server...")
         server.socket.close()
 
 
