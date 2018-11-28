@@ -24,18 +24,24 @@ DBSession = sessionmaker(bind = engine)
 # @app.route tells Flask to execute the following function when it receives
 # a GET request to the indicated path. You can chain them as shown
 @app.route('/')
-@app.route('/hello')
-def HelloWorld():
-    # This will get the first restaurant, and display all its menu items
+@app.route('/restaurants/<int:restaurant_id>/')
+def showMenu(restaurant_id = 1):
+    # We've provided a default parameter of 1, like in JavaScripts
+    # This will display all menu items for a restaurant
     session = DBSession()
-    first_restaurant = session.query(Restaurant).order_by('name').first()
-    menu_items = session.query(MenuItem).filter_by(restaurant_id = first_restaurant.id).all()
+    # Query for restaurant, by id. Returns object with restaurant name
+    restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
+    # Query for menu items of restaurant. Returns object with all items.
+    menu_items = session.query(MenuItem).filter_by(restaurant_id = restaurant_id).all()
     # Now that we have the menu items, print everything out!
     output = ''
-    output += '<h1>{}</h1>'.format(first_restaurant.name)
+    output += '<h1>{}</h1>'.format(restaurant.name)
+    output += '<h2>Current Menu:</h2>'
     output += '<ul>'
     for item in menu_items:
-        output += '<li>{}</li>'.format(item.name)
+        output += '<li>{}'.format(item.name)
+        output += '<ul><li>{}</li>'.format(item.price)
+        output += '<li>{}</li></ul>'.format(item.description)
     output += '</ul>'
     # Flask handles all the headers, wfile, etc. - so just return the content!
     return output
