@@ -1,0 +1,21 @@
+<html lang = "en">
+<head>
+  <title>Restaurant Menu</title>
+  <meta charset = "utf-8">
+</head>
+
+<body>
+  <h1>{{restaurant.name}}</h1>
+  <h2>Today's Menu:</h2>
+
+  {% for i in menu_items %}
+  <div>
+  <p>{{i.name}}</p>
+  <p>{{i.description}}</p>
+  <p> {{i.price}} </p>
+  </div>
+  {% endfor %}
+
+</body>
+
+</html>

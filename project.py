@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # Simple flask app to learn the framework
-from flask import Flask
+from flask import Flask, render_template
 
 # Create an instance of Flask, using the application name assigned to this
 # module by Python
@@ -33,18 +33,26 @@ def showMenu(restaurant_id = 1):
     restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
     # Query for menu items of restaurant. Returns object with all items.
     menu_items = session.query(MenuItem).filter_by(restaurant_id = restaurant_id).all()
-    # Now that we have the menu items, print everything out!
-    output = ''
-    output += '<h1>{}</h1>'.format(restaurant.name)
-    output += '<h2>Current Menu:</h2>'
-    output += '<ul>'
-    for item in menu_items:
-        output += '<li>{}'.format(item.name)
-        output += '<ul><li>{}</li>'.format(item.price)
-        output += '<li>{}</li></ul>'.format(item.description)
-    output += '</ul>'
-    # Flask handles all the headers, wfile, etc. - so just return the content!
-    return output
+    # Close the database session
+    session.close()
+    # Now that we have the data, send it to our menu template
+    # The first argument is template to use (in templates folder)
+    # Additional arguments are values to pass to template
+    return render_template('menu.html', restaurant = restaurant, menu_items = menu_items)
+
+
+@app.route('/restaurants/<int:restaurant_id>/create/')
+def newMenuItem(restaurant_id):
+    return "page to create a new menu item. Task 1 complete!"
+
+@app.route('/restaurants/<int:restaurant_id>/<int:menu_id>/edit/')
+def editMenuItem(restaurant_id, menu_id):
+    return "page to edit a menu item. Task 2 complete!"
+
+@app.route('/restaurants/<int:restaurant_id>/<int:menu_id>/delete/')
+def deleteMenuItem(restaurant_id, menu_id):
+    return "page to delete a menu item. Task 3 complete!"
+
 
 # If module is executed from the Python shell, do this stuff. If it's imported
 # into some other code, don't do this stuff!
