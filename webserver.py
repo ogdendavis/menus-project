@@ -143,7 +143,7 @@ class webserverHandler(BaseHTTPRequestHandler):
                 self.send_header("Location", "/restaurants")
                 self.end_headers()
 
-            if (self.path.endswith("edit") and "restaurants" in self.path):
+            if self.path.endswith("edit"):
                 # Use cgi to extract data from the post request
                 # self.headers.getheader gets header sent from client
                 ctype, pdict = cgi.parse_header(self.headers.getheader('content-type'))
