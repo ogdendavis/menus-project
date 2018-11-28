@@ -42,11 +42,12 @@ class webserverHandler(BaseHTTPRequestHandler):
                 output += "<ul>"
                 for restaurant in restaurants:
                     edit_link = "/restaurants/{}/edit".format(restaurant.id)
+                    delete_link = "/restaurants/{}/delete".format(restaurant.id)
                     output += "<li>{}".format(restaurant.name)
                     # Sub-list to hold Edit and Delete links
                     output += "<ul>"
                     output += "<li><a href='{}'>Edit</a>".format(edit_link)
-                    output += "</li><li><a href='#'>Delete</a></li>"
+                    output += "</li><li><a href='{}'>Delete</a></li>".format(delete_link)
                     # Close sub-list ul and restaurant li
                     output += "</ul></li>"
                 output += "</ul>"
@@ -105,6 +106,35 @@ class webserverHandler(BaseHTTPRequestHandler):
                 output += "<form method = 'POST' enctype = 'multipart/form-data' action = '{}'>".format(self.path)
                 output += """New name: <input name = 'new_name' type = 'text' placeholder = "{}">""".format(restaurant_name)
                 output += "<input type = 'submit' value = 'Submit'></form>"
+                # Close body and html tags!
+                output += "</body></html>"
+
+                # Write to response and print to terminal for reference
+                self.wfile.write(output)
+                print(output)
+
+            if self.path.endswith("/delete"):
+                # Confirmation page for restaurant deletion
+                self.send_response(200) # GET success code
+                self.send_header('Content-type', 'text/html')
+                self.end_headers()
+
+                # Get ID of restaurant to be deleted
+                restaurant_id = self.path.split('/')[2]
+                # Use ID to get restaurant name with db_queries function
+                restaurant_name = get_restaurant_by_id(restaurant_id).name
+
+                output = ""
+                # HTML document setup
+                output += "<html lang='en'><head>"
+                output += "<title>Delete {}</title>".format(restaurant_name)
+                output += "<meta charset='utf-8'></head><body>"
+                output += "<h1>DELETE CONFIRMATION</h1>"
+                output += "<p>Are you sure you want to delete {}?".format(restaurant_name)
+                # Form to edit this restaurant
+                output += "<form method = 'POST' enctype = 'multipart/form-data' action = '{}'>".format(self.path)
+                output += """<input type = 'submit' value = "Yes, delete {}"></form>""".format(restaurant_name)
+                output += "<form method = 'GET' action = '/restaurants'><input type = 'submit' value = 'Cancel'></form>"
                 # Close body and html tags!
                 output += "</body></html>"
 
