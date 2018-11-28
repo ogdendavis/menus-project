@@ -9,7 +9,7 @@ from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
 import cgi
 # db_queries holds functions that perform SQL queries on the database and
 # return the results in ways that can be used in this Python server code
-from db_queries import get_restaurants, get_restaurant_by_id, add_restaurant
+from db_queries import get_restaurants, get_restaurant_by_id, add_restaurant, edit_restaurant
 
 ### How to process HTTP requests ###
 
@@ -102,7 +102,7 @@ class webserverHandler(BaseHTTPRequestHandler):
                 output += "<meta charset='utf-8'></head><body>"
                 output += "<h1>Edit {}</h1>".format(restaurant_name)
                 # Form to edit this restaurant
-                output += "<form method = 'POST' enctype = 'multipart/form-data' action = '/restaurants/edit'>"
+                output += "<form method = 'POST' enctype = 'multipart/form-data' action = '{}'>".format(self.path)
                 output += """New name: <input name = 'new_name' type = 'text' placeholder = "{}">""".format(restaurant_name)
                 output += "<input type = 'submit' value = 'Submit'></form>"
                 # Close body and html tags!
@@ -135,6 +135,31 @@ class webserverHandler(BaseHTTPRequestHandler):
                     restaurant_name = fields.get('restaurant')
                 # Use function from db_queries to add restaurant to database
                 add_restaurant(restaurant_name[0])
+
+                # Once DB function is completed, send back headers
+                self.send_response(301) # Response for successful POST
+                self.send_header("Content-type", "text/html")
+                # Redirect header -- causes client to go to restaurant list
+                self.send_header("Location", "/restaurants")
+                self.end_headers()
+
+            if (self.path.endswith("edit") and "restaurants" in self.path):
+                # Use cgi to extract data from the post request
+                # self.headers.getheader gets header sent from client
+                ctype, pdict = cgi.parse_header(self.headers.getheader('content-type'))
+                # If the headers that were sent include form input data:
+                if ctype == 'multipart/form-data':
+                    # Parse the form fields and get the 'restaurant' field,
+                    # which is a list with 1 item (the text entered)
+                    fields = cgi.parse_multipart(self.rfile, pdict)
+                    new_name = fields.get("new_name")[0]
+
+                # Form used the edit page's URL as action, so get restaurant
+                # id from that
+                id = self.path.split('/')[2]
+
+                # Use name and ID to update restaurant in db_queries
+                edit_restaurant(id, new_name)
 
                 # Once DB function is completed, send back headers
                 self.send_response(301) # Response for successful POST

@@ -47,3 +47,13 @@ def add_restaurant(new_name):
     # Commit makes the change in the session, close closes it
     session.commit()
     session.close()
+
+def edit_restaurant(id, new_name):
+    # Create a session for this database transaction
+    session = DBSession()
+    # Get the indicated restaurant by ID, and update the name
+    target = session.query(Restaurant).filter_by(id = id).one()
+    target.name = new_name
+    # Commit and close session
+    session.commit()
+    session.close()
