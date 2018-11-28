@@ -56,8 +56,6 @@ class webserverHandler(BaseHTTPRequestHandler):
 
                 # Write output to write file, thus sending to client
                 self.wfile.write(output)
-                # Print output in terminal for reference/debugging
-                print(output)
 
             # Page to add new restaurants
             if self.path.endswith("/restaurants/new"):
@@ -81,8 +79,6 @@ class webserverHandler(BaseHTTPRequestHandler):
 
                 # Write output to write file, thus sending to client
                 self.wfile.write(output)
-                # Print output in terminal for reference/debugging
-                print(output)
 
             # Page to edit existing restaurant
             if self.path.endswith("/edit"):
@@ -109,9 +105,8 @@ class webserverHandler(BaseHTTPRequestHandler):
                 # Close body and html tags!
                 output += "</body></html>"
 
-                # Write to response and print to terminal for reference
+                # Write to response
                 self.wfile.write(output)
-                print(output)
 
             if self.path.endswith("/delete"):
                 # Confirmation page for restaurant deletion
@@ -138,9 +133,8 @@ class webserverHandler(BaseHTTPRequestHandler):
                 # Close body and html tags!
                 output += "</body></html>"
 
-                # Write to response and print to terminal for reference
+                # Write to response
                 self.wfile.write(output)
-                print(output)
 
 
         except IOError:
