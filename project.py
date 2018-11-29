@@ -21,6 +21,7 @@ Base.metadata.bind = engine
 # Create a sessionmaker -- each function will create its own session
 DBSession = sessionmaker(bind = engine)
 
+
 # @app.route tells Flask to execute the following function when it receives
 # a GET request to the indicated path. You can chain them as shown
 @app.route('/')
@@ -39,6 +40,7 @@ def showMenu(restaurant_id = 1):
     # The first argument is template to use (in templates folder)
     # Additional arguments are values to pass to template
     return render_template('menu.html', restaurant = restaurant, menu_items = menu_items)
+
 
 # Use methods in route to allow functions to respond to more than just GET
 @app.route('/restaurants/<int:restaurant_id>/create/', methods = ['GET', 'POST'])
@@ -64,9 +66,17 @@ def newMenuItem(restaurant_id):
         # Redirect is a Flask function that does what it says!
         return redirect(url_for('showMenu', restaurant_id = restaurant_id))
 
-@app.route('/restaurants/<int:restaurant_id>/<int:menu_id>/edit/')
-def editMenuItem(restaurant_id, menu_id):
-    return "page to edit a menu item. Task 2 complete!"
+
+@app.route('/restaurants/<int:restaurant_id>/<int:item_id>/edit/', methods = ['GET', 'POST'])
+def editMenuItem(restaurant_id, item_id):
+    session = DBSession()
+    restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
+    item = session.query(MenuItem).filter_by(id = item_id).one()
+
+    if request.method == 'GET':
+        session.close()
+        return render_template('editmenuitem.html', item = item, restaurant = restaurant)
+
 
 @app.route('/restaurants/<int:restaurant_id>/<int:menu_id>/delete/')
 def deleteMenuItem(restaurant_id, menu_id):
