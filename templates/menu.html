@@ -10,7 +10,7 @@
   <!-- get_flashed_messages returns a Python list of messages that have been added with flash() in the module that calls this template -->
   {% with messages = get_flashed_messages() %}
     {% if messages %}
-      <ul>
+      <ul class = "flash">
         {% for message in messages %}
           <li><strong>{{ message }}</strong></li>
         {% endfor %}
@@ -23,13 +23,15 @@
   <h2>Today's Menu:</h2>
 
   {% for i in menu_items %}
-  <div>
-  <p>{{i.name}}</p>
-  <p>{{i.description}}</p>
-  <p> {{i.price}} </p>
-  <!-- url_for is a flask function. It takes the name of the function to which the URL is related as the first argument, and any values to provide that function as additional arguments. These refer to functions in project.py, which is the module that calls this template -->
-  <p><a href="{{ url_for('editMenuItem', restaurant_id = restaurant.id, item_id = i.id) }}">Edit</a></p>
-  <p><a href="{{ url_for('deleteMenuItem', restaurant_id = restaurant.id, item_id = i.id) }}">Delete</a></p>
+  <div class = "item">
+    <p class = "item__name">{{i.name}}</p>
+    <p class = "item__description">{{i.description}}</p>
+    <p class = "item__price"> {{i.price}} </p>
+    <!-- url_for is a flask function. It takes the name of the function to which the URL is related as the first argument, and any values to provide that function as additional arguments. These refer to functions in project.py, which is the module that calls this template -->
+    <p class = "item__modify">
+      <a href="{{ url_for('editMenuItem', restaurant_id = restaurant.id, item_id = i.id) }}">Edit</a>
+      <a href="{{ url_for('deleteMenuItem', restaurant_id = restaurant.id, item_id = i.id) }}">Delete</a>
+    </p>
   </div>
   {% endfor %}
 

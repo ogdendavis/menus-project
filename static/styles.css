@@ -1,8 +1,59 @@
 body {
+  /* Variables*/
   --white: #ddd;
   --black: #222;
-  margin: 0;
-  padding: 0;
+  --gray: #777;
+  --rounded: 8px;
+
+  /* Positioning & Size */
+  box-sizing: border-box;
+  margin: 32px auto;
+  width: 60%;
+  min-width: 600px;
+
+  /* Border and internal sizing */
+  border: 1px solid var(--white);
+  border-radius: var(--rounded);
+  padding: 16px;
+  box-shadow: 0px 0px 12px 0px var(--gray);
+
+  /* Color & Font */
   background-color: var(--black);
   color: var(--white);
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  text-align: center;
+}
+
+.flash {
+  color: greenyellow;
+}
+
+.item {
+  border: 1px solid var(--gray);
+  border-radius: var(--rounded);
+  margin: 8px auto;
+  padding: 0 16px;
+  position: relative;
+}
+
+.item__name {
+  font-weight: 700;
+}
+
+.item__description {
+  font-style: italic;
+}
+
+.item__modify {
+  position: absolute;
+  top: 0;
+  right: 16px;
+}
+
+.item__modify a {
+  display: inline-block;
+  margin-left: 8px;
 }
