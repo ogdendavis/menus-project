@@ -70,16 +70,26 @@ def newMenuItem(restaurant_id):
 @app.route('/restaurants/<int:restaurant_id>/<int:item_id>/edit/', methods = ['GET', 'POST'])
 def editMenuItem(restaurant_id, item_id):
     session = DBSession()
+    # Get both restaurant and item
     restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
     item = session.query(MenuItem).filter_by(id = item_id).one()
 
     if request.method == 'GET':
+        # GET request simply shows the form
         session.close()
         return render_template('editmenuitem.html', item = item, restaurant = restaurant)
 
+    if request.method == 'POST':
+        # Update the item, commit it, and redirect to the restaurant's menu
+        item.name = request.form['new_name']
+        session.add(item)
+        session.commit()
+        session.close()
+        return redirect(url_for('showMenu', restaurant_id = restaurant_id))
 
-@app.route('/restaurants/<int:restaurant_id>/<int:menu_id>/delete/')
-def deleteMenuItem(restaurant_id, menu_id):
+
+@app.route('/restaurants/<int:restaurant_id>/<int:item_id>/delete/')
+def deleteMenuItem(restaurant_id, item_id):
     return "page to delete a menu item. Task 3 complete!"
 
 
