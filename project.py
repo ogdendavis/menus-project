@@ -98,6 +98,12 @@ def deleteMenuItem(restaurant_id, item_id):
         session.close()
         return render_template('deletemenuitem.html', restaurant = restaurant, item = item)
 
+    if request.method == 'POST':
+        session.delete(item)
+        session.commit()
+        session.close()
+        return redirect(url_for('showMenu', restaurant_id = restaurant_id))
+
     return "page to delete a menu item. Task 3 complete!"
 
 
