@@ -1,0 +1,8 @@
+body {
+  --white: #ddd;
+  --black: #222;
+  margin: 0;
+  padding: 0;
+  background-color: var(--black);
+  color: var(--white);
+}
