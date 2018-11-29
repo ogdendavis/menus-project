@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # Simple flask app to learn the framework
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 
 # Create an instance of Flask, using the application name assigned to this
 # module by Python
@@ -63,6 +63,10 @@ def newMenuItem(restaurant_id):
         session.add(new_item)
         session.commit()
         session.close()
+        # Flash logs a message that can then be displayed in a template. This
+        # message (and ones in editMenuItem and deleteMenuItem) will display on
+        # the menu.html template when it reloads after this function is done
+        flash('{} created'.format(new_item.name))
         # Redirect is a Flask function that does what it says!
         return redirect(url_for('showMenu', restaurant_id = restaurant_id))
 
@@ -85,6 +89,7 @@ def editMenuItem(restaurant_id, item_id):
         session.add(item)
         session.commit()
         session.close()
+        flash('{} updated'.format(item.name))
         return redirect(url_for('showMenu', restaurant_id = restaurant_id))
 
 
@@ -102,14 +107,15 @@ def deleteMenuItem(restaurant_id, item_id):
         session.delete(item)
         session.commit()
         session.close()
+        flash('{} deleted'.format(item.name))
         return redirect(url_for('showMenu', restaurant_id = restaurant_id))
-
-    return "page to delete a menu item. Task 3 complete!"
 
 
 # If module is executed from the Python shell, do this stuff. If it's imported
 # into some other code, don't do this stuff!
 if __name__ == '__main__':
+    # Secret key enables sessions, which lets message flashing work!
+    app.secret_key = 'super_secret_key'
     # Debug mode makes server reload whenever code change is detected! No need
     # to stop and restart server whenever we want to see a change.
     app.debug = True
