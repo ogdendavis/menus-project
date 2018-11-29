@@ -20,6 +20,10 @@ Base.metadata.bind = engine
 
 # Create a sessionmaker -- each function will create its own session
 DBSession = sessionmaker(bind = engine)
+# Create one master session to handle everything -- doing it here because when
+# I had separate sessions within each function, I got an error message when
+# trying to implement message flashing
+session = DBSession()
 
 
 # @app.route tells Flask to execute the following function when it receives
@@ -29,13 +33,10 @@ DBSession = sessionmaker(bind = engine)
 def showMenu(restaurant_id = 1):
     # We've provided a default parameter of 1, like in JavaScripts
     # This will display all menu items for a restaurant
-    session = DBSession()
     # Query for restaurant, by id. Returns object with name & id
     restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
     # Query for menu items of restaurant. Returns object with all items.
     menu_items = session.query(MenuItem).filter_by(restaurant_id = restaurant_id).all()
-    # Close the database session
-    session.close()
     # Now that we have the data, send it to our menu template
     # The first argument is template to use (in templates folder)
     # Additional arguments are values to pass to template
@@ -46,13 +47,11 @@ def showMenu(restaurant_id = 1):
 @app.route('/restaurants/<int:restaurant_id>/create/', methods = ['GET', 'POST'])
 def newMenuItem(restaurant_id):
     # Get object with restaurant info (id & name)
-    session = DBSession()
     restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
 
     # For GET requests, just show the form
     if request.method == 'GET':
-        # Close the session, since we have no more database functions to run
-        session.close()
+        # For GET, just return the form for a new menu item, from the template
         return render_template('newmenuitem.html', restaurant = restaurant)
 
     #For POST requests, create the new item and show the updated menu
@@ -62,7 +61,6 @@ def newMenuItem(restaurant_id):
         # Add the new item to the database session, commit, and close
         session.add(new_item)
         session.commit()
-        session.close()
         # Flash logs a message that can then be displayed in a template. This
         # message (and ones in editMenuItem and deleteMenuItem) will display on
         # the menu.html template when it reloads after this function is done
@@ -73,14 +71,12 @@ def newMenuItem(restaurant_id):
 
 @app.route('/restaurants/<int:restaurant_id>/<int:item_id>/edit/', methods = ['GET', 'POST'])
 def editMenuItem(restaurant_id, item_id):
-    session = DBSession()
     # Get both restaurant and item
     restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
     item = session.query(MenuItem).filter_by(id = item_id).one()
 
     if request.method == 'GET':
         # GET request simply shows the form
-        session.close()
         return render_template('editmenuitem.html', item = item, restaurant = restaurant)
 
     if request.method == 'POST':
@@ -88,25 +84,21 @@ def editMenuItem(restaurant_id, item_id):
         item.name = request.form['new_name']
         session.add(item)
         session.commit()
-        session.close()
         flash('{} updated'.format(item.name))
         return redirect(url_for('showMenu', restaurant_id = restaurant_id))
 
 
 @app.route('/restaurants/<int:restaurant_id>/<int:item_id>/delete/', methods = ['GET', 'POST'])
 def deleteMenuItem(restaurant_id, item_id):
-    session = DBSession()
     restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
     item = session.query(MenuItem).filter_by(id = item_id).one()
 
     if request.method == 'GET':
-        session.close()
         return render_template('deletemenuitem.html', restaurant = restaurant, item = item)
 
     if request.method == 'POST':
         session.delete(item)
         session.commit()
-        session.close()
         flash('{} deleted'.format(item.name))
         return redirect(url_for('showMenu', restaurant_id = restaurant_id))
 
