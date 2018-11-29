@@ -8,7 +8,7 @@
   <h1>Edit {{ item.name }}</h1>
 
   <form method = "POST" action = "{{ url_for('editMenuItem', restaurant_id = restaurant.id, item_id = item.id) }}">
-    New Name: <input type = "text" name = "new_name" size = "30">
+    New Name: <input type = "text" name = "new_name" size = "30" placeholder = "{{ item.name }}">
     <input type = "submit" value = "Edit Item">
   </form>
   <form method = "GET" action = "{{ url_for('showMenu', restaurant_id = restaurant.id) }}">
