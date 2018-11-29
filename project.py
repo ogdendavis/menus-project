@@ -46,8 +46,23 @@ def newMenuItem(restaurant_id):
     # Get object with restaurant info (id & name)
     session = DBSession()
     restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
-    session.close()
-    return render_template('newmenuitem.html', restaurant = restaurant)
+
+    # For GET requests, just show the form
+    if request.method == 'GET':
+        # Close the session, since we have no more database functions to run
+        session.close()
+        return render_template('newmenuitem.html', restaurant = restaurant)
+
+    #For POST requests, create the new item and show the updated menu
+    if request.method == 'POST':
+        # Use the class defined in database_setup to create a new menu item
+        new_item = MenuItem(name = request.form['name'], restaurant_id = restaurant_id)
+        # Add the new item to the database session, commit, and close
+        session.add(new_item)
+        session.commit()
+        session.close()
+        # Redirect is a Flask function that does what it says!
+        return redirect(url_for('showMenu', restaurant_id = restaurant_id))
 
 @app.route('/restaurants/<int:restaurant_id>/<int:menu_id>/edit/')
 def editMenuItem(restaurant_id, menu_id):
