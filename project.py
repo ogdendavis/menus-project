@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # Simple flask app to learn the framework
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
 
 # Create an instance of Flask, using the application name assigned to this
 # module by Python
@@ -29,7 +29,7 @@ def showMenu(restaurant_id = 1):
     # We've provided a default parameter of 1, like in JavaScripts
     # This will display all menu items for a restaurant
     session = DBSession()
-    # Query for restaurant, by id. Returns object with restaurant name
+    # Query for restaurant, by id. Returns object with name & id
     restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
     # Query for menu items of restaurant. Returns object with all items.
     menu_items = session.query(MenuItem).filter_by(restaurant_id = restaurant_id).all()
@@ -40,10 +40,14 @@ def showMenu(restaurant_id = 1):
     # Additional arguments are values to pass to template
     return render_template('menu.html', restaurant = restaurant, menu_items = menu_items)
 
-
-@app.route('/restaurants/<int:restaurant_id>/create/')
+# Use methods in route to allow functions to respond to more than just GET
+@app.route('/restaurants/<int:restaurant_id>/create/', methods = ['GET', 'POST'])
 def newMenuItem(restaurant_id):
-    return "page to create a new menu item. Task 1 complete!"
+    # Get object with restaurant info (id & name)
+    session = DBSession()
+    restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
+    session.close()
+    return render_template('newmenuitem.html', restaurant = restaurant)
 
 @app.route('/restaurants/<int:restaurant_id>/<int:menu_id>/edit/')
 def editMenuItem(restaurant_id, menu_id):

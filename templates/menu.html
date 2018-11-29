@@ -6,6 +6,9 @@
 
 <body>
   <h1>{{restaurant.name}}</h1>
+
+  <p><a href = "{{ url_for('newMenuItem', restaurant_id = restaurant.id) }}">Add menu item</a></p>
+
   <h2>Today's Menu:</h2>
 
   {% for i in menu_items %}
@@ -13,6 +16,7 @@
   <p>{{i.name}}</p>
   <p>{{i.description}}</p>
   <p> {{i.price}} </p>
+  <!-- url_for is a flask function. It takes the name of the function to which the URL is related as the first argument, and any values to provide that function as additional arguments. These refer to functions in project.py, which is the module that calls this template -->
   <p><a href="{{ url_for('editMenuItem', restaurant_id = restaurant.id, menu_id = i.id) }}">Edit</a></p>
   <p><a href="{{ url_for('deleteMenuItem', restaurant_id = restaurant.id, menu_id = i.id) }}">Delete</a></p>
   </div>
