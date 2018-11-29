@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 # Simple flask app to learn the framework
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 
 # Create an instance of Flask, using the application name assigned to this
 # module by Python
@@ -30,6 +30,7 @@ session = DBSession()
 # a GET request to the indicated path. You can chain them as shown
 @app.route('/')
 @app.route('/restaurants/<int:restaurant_id>/')
+@app.route('/restaurants/<int:restaurant_id>/menu/')
 def showMenu(restaurant_id = 1):
     # We've provided a default parameter of 1, like in JavaScripts
     # This will display all menu items for a restaurant
@@ -101,6 +102,29 @@ def deleteMenuItem(restaurant_id, item_id):
         session.commit()
         flash('{} deleted'.format(item.name))
         return redirect(url_for('showMenu', restaurant_id = restaurant_id))
+
+
+# Making an API endpoint for GET requests - provides JSON object with all menu
+# items for one restaurant
+@app.route('/restaurants/<int:restaurant_id>/menu/json')
+def restaurantMenuJSON(restaurant_id):
+    # DB queries for restaurant and menu items, just like in showMenu
+    restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
+    menu_items = session.query(MenuItem).filter_by(restaurant_id = restaurant_id).all()
+    # Return a JSON object using jsonify!
+    return jsonify(MenuItem = [i.serialize for i in menu_items])
+
+
+# API endpoint to get one menu item
+@app.route('/restaurants/<int:restaurant_id>/menu/<int:item_id>/json')
+def menuItemJSON(restaurant_id, item_id):
+    item = session.query(MenuItem).filter_by(id = item_id).one()
+    # Since all menu item ids are unique, we need to protect against accessing
+    # a menu item from the wrong restaurant
+    if item.restaurant_id != restaurant_id:
+        return "No such menu item at this restaurant!"
+    # Serialize the one menu item, and return it as a JSON object
+    return jsonify(MenuItem = item.serialize)
 
 
 # If module is executed from the Python shell, do this stuff. If it's imported

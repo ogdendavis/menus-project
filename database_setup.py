@@ -49,6 +49,18 @@ class MenuItem(Base):
     # 'restaurant' attribute.
     restaurant = relationship(Restaurant)
 
+    ### Adding a serializer to make JSON objects from MenuItem database ###
+    @property
+    def serialize(self):
+        return {
+            'name': self.name,
+            'id': self.id,
+            'course': self.course,
+            'description': self.description,
+            'price': self.price,
+        }
+
+
 ### Final setup ###
 
 # Create new SQLite3 database
