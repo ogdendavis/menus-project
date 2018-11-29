@@ -9,11 +9,10 @@
   <h1>New Menu Item for {{ restaurant.name }}</h1>
 
   <form method = "POST" action = "{{ url_for('newMenuItem', restaurant_id = restaurant.id) }}">
-    <p>Item Name:</p>
-      <input type = "text" name = "name" size = "30">
+    Item Name: <input type = "text" name = "name" size = "30">
     <input type = "submit" value = "Create Item">
   </form>
-  <form method = "GET" action = "{{ url_for('showMenu', restaurant_id = restaurant.id) }}">
+  <form method = "GET" action = "{{ url_for('showMenu', restaurant_id = restaurant.id) }}" class = "cancel-button">
     <input type = "submit" value = "Cancel">
   </form>
 </body>

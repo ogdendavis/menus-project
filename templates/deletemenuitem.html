@@ -11,7 +11,7 @@
   <form method = "POST" action = "{{ url_for('deleteMenuItem', restaurant_id = restaurant.id, item_id = item.id) }}">
     <input type = "submit" value = "Yes, delete {{ item.name }}">
   </form>
-  <form method = "GET" action = "{{ url_for('showMenu', restaurant_id = restaurant.id) }}">
+  <form method = "GET" action = "{{ url_for('showMenu', restaurant_id = restaurant.id) }}" class = "cancel-button">
     <input type = "submit" value = "Cancel">
   </form>
 </body>

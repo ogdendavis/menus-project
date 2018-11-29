@@ -57,3 +57,12 @@ h1 {
   display: inline-block;
   margin-left: 8px;
 }
+
+form {
+  margin: 16px;
+}
+
+.cancel-button {
+  display: block;
+  text-align: center;
+}
