@@ -7,21 +7,27 @@
 <body>
   <h1>{{ restaurant.name }}</h1>
 
+  {% if items|length == 0 %}
+    <p> We don't have any menu items for this restaurant, yet!</p>
+  {% endif %}
+
   <p><a href = "{{ url_for('addItem', restaurant_id = restaurant.id) }}">Add menu item</a></p>
 
-  <h2>Today's Menu:</h2>
+  {% if items|length > 0 %}
+    <h2>Today's Menu:</h2>
 
-  {% for i in items %}
-  <ul class = "item">
-    <li class = "item__name">{{i.name}}</li>
-    <li class = "item__description">{{i.description}}</li>
-    <li class = "item__price"> {{i.price}} </li>
-    <li class = "item__modify">
-      <a href="{{ url_for('editItem', restaurant_id = restaurant.id, item_id = i.id) }}">Edit</a>
-      <a href="{{ url_for('deleteItem', restaurant_id = restaurant.id, item_id = i.id) }}">Delete</a>
-    </li>
-  </ul>
-  {% endfor %}
+    {% for i in items %}
+    <ul class = "item">
+      <li class = "item__name">{{i.name}}</li>
+      <li class = "item__description">{{i.description}}</li>
+      <li class = "item__price"> {{i.price}} </li>
+      <li class = "item__modify">
+        <a href="{{ url_for('editItem', restaurant_id = restaurant.id, item_id = i.id) }}">Edit</a>
+        <a href="{{ url_for('deleteItem', restaurant_id = restaurant.id, item_id = i.id) }}">Delete</a>
+      </li>
+    </ul>
+    {% endfor %}
+  {% endif %}
 
 </body>
 

@@ -7,16 +7,24 @@
 <body>
   <h1>So Many Restaurants to Choose From!</h1>
 
-  <ul>
-    {% for restaurant in restaurants %}
-      <li><a href="{{ url_for('showMenu', restaurant_id = restaurant.id) }}" title="View Menu">{{ restaurant.name }}</a>
-        <ul>
-          <li><a href="{{ url_for('editRestaurant', restaurant_id = restaurant.id) }}">Edit</a></li>
-          <li><a href="{{ url_for('deleteRestaurant', restaurant_id = restaurant.id) }}">Delete</a></li>
-        </ul>
-      </li>
-    {% endfor %}
-  <ul>
+  {% if restaurants|length == 0 %}
+    <p>Actually, we don't have any restaurants, yet. How embarrasing. Help us out by adding a restaurant below!</p>
+  {% endif %}
+
+  <p><a href = "{{ url_for('addRestaurant') }}">Add a restaurant</a></p>
+
+  {% if restaurants|length > 0 %}
+    <ul>
+      {% for restaurant in restaurants %}
+        <li><a href="{{ url_for('showMenu', restaurant_id = restaurant.id) }}" title="View Menu">{{ restaurant.name }}</a>
+          <ul>
+            <li><a href="{{ url_for('editRestaurant', restaurant_id = restaurant.id) }}">Edit</a></li>
+            <li><a href="{{ url_for('deleteRestaurant', restaurant_id = restaurant.id) }}">Delete</a></li>
+          </ul>
+        </li>
+      {% endfor %}
+    <ul>
+  {% endif %}
 
 </body>
 </html>
