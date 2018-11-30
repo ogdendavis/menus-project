@@ -1,10 +1,23 @@
 <html lang = "en">
 <head>
-  <title>Add Menu Item</title>
+  <title>Add Restaurant</title>
   <meta charset = "utf-8">
 </head>
 
 <body>
-  This is the addrestaurant.html template
+
+  <h1>New Restaurant</h1>
+
+  <form method = "POST" action = "#">
+    <p>
+      <label for = "name">Restaurant Name:</label>
+      <input type = "text" id = "name" name = "name" size = "30" required>
+    </p>
+    <input type = "submit" value = "Submit">
+  </form>
+  <form method = "GET" action = "#" class = "cancel-button">
+    <input type = "submit" value = "Cancel">
+  </form>
+
 </body>
 </html>

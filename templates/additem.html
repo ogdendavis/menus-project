@@ -5,6 +5,28 @@
 </head>
 
 <body>
-  This is the additem.html template
+  <h1>New Menu Item for {{ restaurant.name }}</h1>
+
+  <form method = "POST" action = "#">
+    <p class = "form__instructions">
+      Fields marked with * are required
+    </p>
+    <p>
+      <label for = "name">Item Name:*</label>
+      <input type = "text" id = "name" name = "name" size = "30" required>
+    </p>
+    <p>
+      <label for = "desc">Description:</label>
+      <input type = "text" id = "desc" name = "description" size = "60">
+    </p>
+    <p>
+      <label for = "price">Price:*</label>
+      <input type = "number" id = "price" name = "price" size = "10" required>
+    </p>
+    <input type = "submit" value = "Submit">
+  </form>
+  <form method = "GET" action = "#" class = "cancel-button">
+    <input type = "submit" value = "Cancel">
+  </form>
 </body>
 </html>

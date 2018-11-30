@@ -1,10 +1,22 @@
 <html lang = "en">
 <head>
-  <title>Add Menu Item</title>
+  <title>Where to Eat?</title>
   <meta charset = "utf-8">
 </head>
 
 <body>
-  This is the restaurants.html template
+  <h1>So Many Restaurants to Choose From!</h1>
+
+  <ul>
+    {% for restaurant in restaurants %}
+      <li><a href="#" title="View Menu">{{ restaurant.name }}</a>
+        <ul>
+          <li><a href="#">Edit</a></li>
+          <li><a href="#">Delete</a></li>
+        </ul>
+      </li>
+    {% endfor %}
+  <ul>
+
 </body>
 </html>

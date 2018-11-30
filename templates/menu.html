@@ -1,10 +1,28 @@
 <html lang = "en">
 <head>
-  <title>Add Menu Item</title>
+  <title>{{ restaurant.name }} Menu</title>
   <meta charset = "utf-8">
 </head>
 
 <body>
-  This is the menu.html template
+  <h1>{{restaurant.name}}</h1>
+
+  <p><a href = "#">Add menu item</a></p>
+
+  <h2>Today's Menu:</h2>
+
+  {% for i in items %}
+  <ul class = "item">
+    <li class = "item__name">{{i.name}}</li>
+    <li class = "item__description">{{i.description}}</li>
+    <li class = "item__price"> {{i.price}} </li>
+    <li class = "item__modify">
+      <a href="#">Edit</a>
+      <a href="#">Delete</a>
+    </li>
+  </ul>
+  {% endfor %}
+
 </body>
+
 </html>
