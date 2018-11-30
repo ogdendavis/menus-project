@@ -9,10 +9,10 @@
 
   <ul>
     {% for restaurant in restaurants %}
-      <li><a href="#" title="View Menu">{{ restaurant.name }}</a>
+      <li><a href="{{ url_for('showMenu', restaurant_id = restaurant.id) }}" title="View Menu">{{ restaurant.name }}</a>
         <ul>
-          <li><a href="#">Edit</a></li>
-          <li><a href="#">Delete</a></li>
+          <li><a href="{{ url_for('editRestaurant', restaurant_id = restaurant.id) }}">Edit</a></li>
+          <li><a href="{{ url_for('deleteRestaurant', restaurant_id = restaurant.id) }}">Delete</a></li>
         </ul>
       </li>
     {% endfor %}

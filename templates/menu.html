@@ -5,9 +5,9 @@
 </head>
 
 <body>
-  <h1>{{restaurant.name}}</h1>
+  <h1>{{ restaurant.name }}</h1>
 
-  <p><a href = "#">Add menu item</a></p>
+  <p><a href = "{{ url_for('addItem', restaurant_id = restaurant.id) }}">Add menu item</a></p>
 
   <h2>Today's Menu:</h2>
 
@@ -17,8 +17,8 @@
     <li class = "item__description">{{i.description}}</li>
     <li class = "item__price"> {{i.price}} </li>
     <li class = "item__modify">
-      <a href="#">Edit</a>
-      <a href="#">Delete</a>
+      <a href="{{ url_for('editItem', restaurant_id = restaurant.id, item_id = i.id) }}">Edit</a>
+      <a href="{{ url_for('deleteItem', restaurant_id = restaurant.id, item_id = i.id) }}">Delete</a>
     </li>
   </ul>
   {% endfor %}
