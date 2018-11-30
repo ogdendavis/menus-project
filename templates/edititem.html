@@ -17,6 +17,13 @@
       <input type = "text" id = "name" name = "name" size = "30" value = "{{ item.name }}" required>
     </p>
     <p>
+      Course:
+      <input type = "radio" name = "course" value = "Appetizer" id = "app" {{ "checked" if item.course == "Appetizer" else "" }}><label for = "app">Appetizer</label>
+      <input type = "radio" name = "course" value = "Entree" id = "ent" {{ "checked" if item.course == "Entree" else "" }}><label for = "ent">Entree</label>
+      <input type = "radio" name = "course" value = "Dessert" id = "des" {{ "checked" if item.course == "Dessert" else "" }}><label for = "des">Dessert</label>
+      <input type = "radio" name = "course" value = "Beverage" id = "bev" {{ "checked" if item.course == "Beverage" else "" }}><label for = "bev">Beverage</label>
+    </p>
+    <p>
       <label for = "desc">Description:</label>
       <input type = "text" id = "desc" name = "description" size = "60" value = "{{ item.description }}">
     </p>
