@@ -8,13 +8,13 @@
 
   <h1>Delete {{ item.name }} at {{ restaurant.name }}?</h1>
 
-  <form method = "POST" action = "#">
+  <form method = "POST" action = "{{ url_for('deleteItem', restaurant_id = restaurant.id, item_id = item.id) }}">
     <p class = "form__instructions">
       Are you sure  you want to delete this menu item? This action cannot be undone.
     </p>
     <input type = "submit" value = "Yes, delete {{ item.name }}">
   </form>
-  <form method = "GET" action = "#" class = "cancel-button">
+  <form method = "GET" action = "{{ url_for('showMenu', restaurant_id = restaurant.id) }}" class = "cancel-button">
     <input type = "submit" value = "Cancel">
   </form>
 

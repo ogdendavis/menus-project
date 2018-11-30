@@ -8,14 +8,14 @@
 
   <h1>New Restaurant</h1>
 
-  <form method = "POST" action = "#">
+  <form method = "POST" action = "{{ url_for('addRestaurant') }}">
     <p>
       <label for = "name">Restaurant Name:</label>
       <input type = "text" id = "name" name = "name" size = "30" required>
     </p>
     <input type = "submit" value = "Submit">
   </form>
-  <form method = "GET" action = "#" class = "cancel-button">
+  <form method = "GET" action = "{{ url_for('showRestaurants') }}" class = "cancel-button">
     <input type = "submit" value = "Cancel">
   </form>
 
