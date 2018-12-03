@@ -4,7 +4,7 @@
 # Uses database created in database_setup.py, and expanded by lotsofmenus.py
 
 # Set up Flask instance
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 app = Flask(__name__)
 
 # Import SQLAlchemy tools
@@ -43,6 +43,8 @@ def addRestaurant():
         new_restaurant = Restaurant(name = request.form['name'])
         session.add(new_restaurant)
         session.commit()
+        # Flash a message confirming the change when user redirects to main page
+        flash("{} created".format(new_restaurant.name))
         return redirect(url_for('showRestaurants'))
     if request.method == 'GET':
         return render_template('addrestaurant.html')
@@ -57,6 +59,7 @@ def editRestaurant(restaurant_id):
         restaurant.name = request.form['name']
         session.add(restaurant)
         session.commit()
+        flash("{} updated".format(restaurant.name))
         return redirect(url_for('showRestaurants'))
     if request.method == 'GET':
         return render_template('editrestaurant.html', restaurant = restaurant)
@@ -69,6 +72,7 @@ def deleteRestaurant(restaurant_id):
     if request.method == 'POST':
         session.delete(restaurant)
         session.commit()
+        flash("{} deleted".format(restaurant.name))
         return redirect(url_for('showRestaurants'))
     if request.method == 'GET':
         return render_template('deleterestaurant.html', restaurant = restaurant)
@@ -94,6 +98,7 @@ def addItem(restaurant_id):
         new_item = MenuItem(name = request.form['name'], course = request.form['course'], description = request.form['description'], price = request.form['price'], restaurant_id = restaurant_id)
         session.add(new_item)
         session.commit()
+        flash("{} added".format(new_item.name))
         return redirect(url_for('showMenu', restaurant_id = restaurant_id))
     if request.method == 'GET':
         return render_template('additem.html', restaurant = restaurant)
@@ -116,6 +121,7 @@ def editItem(restaurant_id, item_id):
         item.price = request.form['price']
         session.add(item)
         session.commit()
+        flash("{} updated".format(item.name))
         return redirect(url_for('showMenu', restaurant_id = restaurant_id))
     if request.method == 'GET':
         return render_template('edititem.html', restaurant = restaurant, item = item)
@@ -129,6 +135,7 @@ def deleteItem(restaurant_id, item_id):
     if request.method == 'POST':
         session.delete(item)
         session.commit()
+        flash("{} deleted".format(item.name))
         return redirect(url_for('showMenu', restaurant_id = restaurant_id))
     if request.method == 'GET':
         return render_template('deleteitem.html', restaurant = restaurant, item = item)
@@ -136,5 +143,8 @@ def deleteItem(restaurant_id, item_id):
 
 # When running as the web server, run in debug mode on localhost, port 5000
 if __name__ == '__main__':
+    # Secret key enables sessions, which lets message flashing work! In theory,
+    # this should be a secure key -- but this one isn't
+    app.secret_key = 'omg_so_secret'
     app.debug = True
     app.run(host = '0.0.0.0', port = 5000)
