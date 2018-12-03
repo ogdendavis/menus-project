@@ -9,15 +9,17 @@
 
   <h1>Delete {{ restaurant.name }}?</h1>
 
-  <form method = "POST" action = "{{ url_for('deleteRestaurant', restaurant_id = restaurant.id) }}">
-    <p class = "form__instructions">
-      Are you sure  you want to delete this restaurant? This action cannot be undone.
-    </p>
-    <input type = "submit" value = "Yes, delete {{ restaurant.name }}">
-  </form>
-  <form method = "GET" action = "{{ url_for('showRestaurants') }}" class = "cancel-button">
-    <input type = "submit" value = "Cancel">
-  </form>
+  <div class = "form__container">
+    <form method = "POST" action = "{{ url_for('deleteRestaurant', restaurant_id = restaurant.id) }}">
+      <p class = "form__instructions">
+        Are you sure  you want to delete this restaurant? This action cannot be undone.
+      </p>
+      <input type = "submit" value = "Yes, delete {{ restaurant.name }}">
+    </form>
+    <form method = "GET" action = "{{ url_for('showRestaurants') }}" class = "cancel-button">
+      <input type = "submit" value = "Cancel">
+    </form>
+  </div>
 
 </body>
 </html>

@@ -7,34 +7,35 @@
 
 <body>
   <h1>New Menu Item for {{ restaurant.name }}</h1>
-
-  <form method = "POST" action = "{{ url_for('addItem', restaurant_id = restaurant.id) }}">
-    <p class = "form__instructions">
-      Fields marked with * are required
-    </p>
-    <p>
-      <label for = "name">Item Name:*</label>
-      <input type = "text" id = "name" name = "name" size = "30" required>
-    </p>
-    <p>
-      Course:
-      <input type = "radio" name = "course" value = "Appetizer" id = "app"><label for = "app">Appetizer</label>
-      <input type = "radio" name = "course" value = "Entree" id = "ent"><label for = "ent">Entree</label>
-      <input type = "radio" name = "course" value = "Dessert" id = "des"><label for = "des">Dessert</label>
-      <input type = "radio" name = "course" value = "Beverage" id = "bev"><label for = "bev">Beverage</label>
-    </p>
-    <p>
-      <label for = "desc">Description:</label>
-      <input type = "text" id = "desc" name = "description" size = "60">
-    </p>
-    <p>
-      <label for = "price">Price:*</label>
-      <input type = "text" id = "price" name = "price" size = "10" required>
-    </p>
-    <input type = "submit" value = "Submit">
-  </form>
-  <form method = "GET" action = "{{ url_for('showMenu', restaurant_id = restaurant.id) }}" class = "cancel-button">
-    <input type = "submit" value = "Cancel">
-  </form>
+  <div class = "form__container">
+    <form method = "POST" action = "{{ url_for('addItem', restaurant_id = restaurant.id) }}">
+      <p class = "form__instructions">
+        Fields marked with * are required
+      </p>
+      <p>
+        <label for = "name">Item Name:*</label>
+        <input type = "text" id = "name" name = "name" size = "30" required>
+      </p>
+      <p>
+        <span class = "label">Course:</span>
+        <input type = "radio" name = "course" value = "Appetizer" id = "app"><label for = "app" class = "label--radio">Appetizer</label>
+        <input type = "radio" name = "course" value = "Entree" id = "ent"><label for = "ent" class = "label--radio">Entree</label>
+        <input type = "radio" name = "course" value = "Dessert" id = "des"><label for = "des" class = "label--radio">Dessert</label>
+        <input type = "radio" name = "course" value = "Beverage" id = "bev"><label for = "bev" class = "label--radio">Beverage</label>
+      </p>
+      <p>
+        <label for = "desc">Description:</label>
+        <input type = "text" id = "desc" name = "description" size = "60">
+      </p>
+      <p>
+        <label for = "price">Price:*</label>
+        <input type = "text" id = "price" name = "price" size = "10" required>
+      </p>
+      <input type = "submit" value = "Submit">
+    </form>
+    <form method = "GET" action = "{{ url_for('showMenu', restaurant_id = restaurant.id) }}" class = "cancel-button">
+      <input type = "submit" value = "Cancel">
+    </form>
+  </div>
 </body>
 </html>

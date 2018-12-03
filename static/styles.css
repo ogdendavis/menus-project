@@ -12,8 +12,9 @@ body {
   /* Positioning & Size */
   box-sizing: border-box;
   margin: 32px auto;
-  width: 60%;
+  width: 80%;
   min-width: 600px;
+  max-width: 900px;
 
   /* Internal spacing & sizing */
   padding: 16px;
@@ -133,11 +134,34 @@ a:hover {
   margin-left: 8px;
 }
 
+/* Forms */
+
 form {
   margin: 16px;
 }
 
+label, .label {
+  font-weight: 700;
+}
+
+.label--radio {
+  font-weight: 400;
+}
+
+.form__container {
+  border: 1px solid var(--gray);
+  border-radius: var(--rounded);
+  position: relative;
+  width: 100%;
+}
+
+.form__instructions {
+  font-style: italic;
+}
+
 .cancel-button {
   display: block;
-  text-align: center;
+  position: absolute;
+  bottom: 0;
+  right: 0;
 }
