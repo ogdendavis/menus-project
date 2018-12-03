@@ -30,6 +30,14 @@ class Restaurant(Base):
     name = Column(String(80), nullable = False)
     id = Column(Integer, primary_key = True)
 
+    # Serializer to use in exporting JSON objects
+    @property
+    def serialize(self):
+        return {
+            'name': self.name,
+            'id': self.id,
+        }
+
 
 class MenuItem(Base):
     __tablename__ = 'menu_item'
@@ -58,6 +66,7 @@ class MenuItem(Base):
             'course': self.course,
             'description': self.description,
             'price': self.price,
+            'restaurant': self.restaurant_id
         }
 
 

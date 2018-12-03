@@ -4,7 +4,7 @@
 # Uses database created in database_setup.py, and expanded by lotsofmenus.py
 
 # Set up Flask instance
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 app = Flask(__name__)
 
 # Import SQLAlchemy tools
@@ -139,6 +139,38 @@ def deleteItem(restaurant_id, item_id):
         return redirect(url_for('showMenu', restaurant_id = restaurant_id))
     if request.method == 'GET':
         return render_template('deleteitem.html', restaurant = restaurant, item = item)
+
+
+### Endpoints for JSON requests ###
+
+# JSON object with one menu item:
+@app.route('/restaurants/<int:restaurant_id>/menu/<int:item_id>/json/')
+def exportItem(restaurant_id, item_id):
+    # Get the item from the database
+    item = session.query(MenuItem).filter_by(id = item_id).one()
+    # Check that item exists at the restaurant indicated by the path
+    if restaurant_id != item.restaurant_id:
+        return 'No such item at this restaurant'
+    # Return serialized JSON object containing this one menu item
+    return jsonify(MenuItem = item.serialize)
+
+
+# JSON object with a restaurant's entire menu
+@app.route('/restaurants/<int:restaurant_id>/menu/json/')
+def exportMenu(restaurant_id):
+    # Get all items at the restaurant
+    items = session.query(MenuItem).filter_by(restaurant_id = restaurant_id).all()
+    # Loop through menu items and serialize them from within the jsonify caller
+    return jsonify(MenuItem = [i.serialize for i in items])
+
+
+# JSON object listing all restaurants with their ids
+@app.route('/restaurants/json')
+def exportRestaurants():
+    # Get all restaurants from database
+    restaurants = session.query(Restaurant).all()
+    # Return all restaurants, using loop like in exportMenu
+    return jsonify(Restaurant = [r.serialize for r in restaurants])
 
 
 # When running as the web server, run in debug mode on localhost, port 5000
