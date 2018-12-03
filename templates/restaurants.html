@@ -1,11 +1,12 @@
 <html lang = "en">
 <head>
-  <title>Where to Eat?</title>
+  <title>Muncher: Where to Eat?</title>
   <meta charset = "utf-8">
+  <link rel = "stylesheet" type = "text/css" href = "{{ url_for('static', filename = 'styles.css') }}">
 </head>
 
 <body>
-  <h1>So Many Restaurants to Choose From!</h1>
+  <h1>Muncher</h1>
 
   <!-- get_flashed_messages returns a Python list of messages that have been added with flash() in the module that calls this template -->
   {% with messages = get_flashed_messages() %}
@@ -22,13 +23,13 @@
     <p>Actually, we don't have any restaurants, yet. How embarrasing. Help us out by adding a restaurant below!</p>
   {% endif %}
 
-  <p><a href = "{{ url_for('addRestaurant') }}">Add a restaurant</a></p>
+  <p class = "db-action"><a href = "{{ url_for('addRestaurant') }}">Add a restaurant</a></p>
 
   {% if restaurants|length > 0 %}
-    <ul>
+    <ul class = "restaurants">
       {% for restaurant in restaurants %}
-        <li><a href="{{ url_for('showMenu', restaurant_id = restaurant.id) }}" title="View Menu">{{ restaurant.name }}</a>
-          <ul>
+        <li class = "restaurant"><a href="{{ url_for('showMenu', restaurant_id = restaurant.id) }}" title="View Menu">{{ restaurant.name }}</a>
+          <ul class = "db-action db-action--inline">
             <li><a href="{{ url_for('editRestaurant', restaurant_id = restaurant.id) }}">Edit</a></li>
             <li><a href="{{ url_for('deleteRestaurant', restaurant_id = restaurant.id) }}">Delete</a></li>
           </ul>

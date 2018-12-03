@@ -1,3 +1,7 @@
+/* Import Google font for headings */
+@import url('https://fonts.googleapis.com/css?family=Vast+Shadow');
+
+/* Global settings */
 body {
   /* Variables*/
   --white: #ddd;
@@ -11,26 +15,80 @@ body {
   width: 60%;
   min-width: 600px;
 
-  /* Border and internal sizing */
-  border: 1px solid var(--white);
-  border-radius: var(--rounded);
+  /* Internal spacing & sizing */
   padding: 16px;
-  box-shadow: 0px 0px 12px 0px var(--gray);
 
   /* Color & Font */
-  background-color: var(--black);
-  color: var(--white);
+  background-color: var(--white);
+  color: var(--black);
   font-family: Arial, sans-serif;
 }
 
-h1 {
+h1, h2 {
+  font-family: 'Vast Shadow', cursive, serif;
+  font-weight: 400;
   text-align: center;
 }
 
-.flash {
-  color: greenyellow;
+h1 {
+  font-size: 3rem;
 }
 
+h2 {
+  font-size: 2rem;
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Flashed messages */
+.flash {
+  color: green;
+  margin-top: -1em;
+  text-align: center;
+}
+
+/* Restaurants (homepage) */
+.db-action {
+  /* Generic class for add/edit/delete links */
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0 16px;
+  font-size: 1rem;
+}
+
+.db-action--inline {
+  /* Action links set to be on same line as previous item */
+  padding: 0;
+}
+
+.db-action--inline li {
+  display: inline-block;
+}
+
+.restaurants {
+  /* Container ul for restaurant list */
+}
+
+.restaurant {
+  /* li for an individual restaurant */
+  font-size: 1.25rem;
+  margin: 1rem 0;
+  position: relative;
+}
+
+
+/* Menus */
 .item {
   border: 1px solid var(--gray);
   border-radius: var(--rounded);
