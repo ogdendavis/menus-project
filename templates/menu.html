@@ -5,6 +5,8 @@
 </head>
 
 <body>
+  <a href="{{ url_for('showRestaurants') }}">Back to restaurant list</a>
+
   <h1>{{ restaurant.name }}</h1>
 
   <!-- get_flashed_messages returns a Python list of messages that have been added with flash() in the module that calls this template -->
