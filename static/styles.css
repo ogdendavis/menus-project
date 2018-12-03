@@ -65,11 +65,18 @@ a:hover {
   right: 0;
   padding: 0 16px;
   font-size: 1rem;
+  margin-top: 16px;
+}
+
+.db-action--left {
+  right: auto;
+  left: 0;
 }
 
 .db-action--inline {
   /* Action links set to be on same line as previous item */
   padding: 0;
+  margin-top: auto;
 }
 
 .db-action--inline li {
@@ -89,12 +96,17 @@ a:hover {
 
 
 /* Menus */
-.item {
+.menu {
   border: 1px solid var(--gray);
   border-radius: var(--rounded);
-  margin: 8px auto;
-  padding: 0 16px;
+  margin: 0 auto;
+  padding: 16px 8px;
+}
+
+.item {
   position: relative;
+  margin: 16px 0;
+  padding: 0 8px;
 }
 
 .item__name {
@@ -103,12 +115,17 @@ a:hover {
 
 .item__description {
   font-style: italic;
+  margin-left: 16px;
+}
+
+.item__price {
+  margin-left: 16px;
 }
 
 .item__modify {
   position: absolute;
   top: 0;
-  right: 16px;
+  right: 8px;
 }
 
 .item__modify a {
